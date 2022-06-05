@@ -61,8 +61,19 @@
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Hari Praktek Dokter</label>
-                                        <input type="text" class="form-control" id="hari_praktek" name="hari_praktek"
-                                            placeholder="Masukkan Hari Praktek Dokter">
+                                        <select class="form-control select" id="hari_praktek" name="hari_praktek[]"
+                                            multiple="multiple">
+                                            <option value="">Pilih Hari</option>
+                                            <option value="senin">Senin</option>
+                                            <option value="selasa">Selasa</option>
+                                            <option value="rabu">Rabu</option>
+                                            <option value="kamis">Kamis</option>
+                                            <option value="jumat">Jumat</option>
+                                            <option value="saptu">Saptu</option>
+                                            <option value="minggu">Minggu</option>
+                                        </select>
+                                        {{-- <input type="text" class="form-control" id="hari_praktek"
+                                            name="hari_praktek" placeholder="Masukkan Hari Praktek Dokter"> --}}
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -89,7 +100,17 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script>
+    $(document).ready(function(){
+      $(".select").select2({
+        placeholder: "Pilih Hari Praktek Dokter",
+        tags: true,
+        tokenSeparators: ["/", ",", ";", " "],
+        width: "100%"
+      });
+    });
+
     $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -135,6 +156,7 @@
                             )
                     // console.log(response);
                     // $('#tutup').click()
+                    $('#hari_praktek').val(null).trigger('change');
                     $('#formhari')[0].reset()
                     $('#formhari').trigger("reset"); //form reset
                     $('#tutup').trigger("reset"); //form reset
@@ -167,7 +189,7 @@
                     console.log(data)
                     $('#id').val(data.id)
                     $('#dokter_id').val(data.dokter_id)
-                    $('#hari_praktek').val(data.hari_praktek)
+                    $('#hari_praktek').select2('val', data.hari_praktek.split(' , '))
                     $('#tutup').trigger("reset");
                 }
             })

@@ -142,6 +142,7 @@
                             )
                     // console.log(response);
                     // $('#tutup').click()
+                    $('#hari_praktek').val(null).trigger('change');
                     $('#formjam')[0].reset()
                     $('#formjam').trigger("reset"); //form reset
                     $('#tutup').trigger("reset"); //form reset

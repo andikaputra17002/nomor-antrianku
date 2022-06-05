@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokter;
 use App\Models\hari_praktek;
+use App\Models\HariPraktek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +18,7 @@ class HariPraktekController extends Controller
     public function index()
     {
         $dokter = Dokter::all();
-        $data = hari_praktek::all();
+        $data = HariPraktek::all();
         if (request()->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
@@ -67,14 +68,14 @@ class HariPraktekController extends Controller
             return response()->json(['status' => 0, 'text' => $validasi->errors()->first()], 422);
         }
 
-        $datas = new hari_praktek();
+        $datas = new HariPraktek();
         $Id = $request->id;
         $data =[
             'dokter_id' => $request->dokter_id,
-            'hari_praktek' => $request->hari_praktek,
+            'hari_praktek' => implode(' , ' , $request->hari_praktek),
         ];
         // $data = $data->save();
-        $datas = hari_praktek::updateOrCreate(['id' => $Id], $data);
+        $datas = HariPraktek::updateOrCreate(['id' => $Id], $data);
 
         if ($datas) {
             return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
@@ -102,7 +103,7 @@ class HariPraktekController extends Controller
      */
     public function edit($id)
     {
-        $data = hari_praktek::find($id);
+        $data = HariPraktek::find($id);
         if($data){
             return response()->json($data);
         }
@@ -128,7 +129,7 @@ class HariPraktekController extends Controller
      */
     public function destroy($id)
     {
-        $data = hari_praktek::where('id',$id)->delete();
+        $data = HariPraktek::where('id',$id)->delete();
      
         return response()->json($data);
     }

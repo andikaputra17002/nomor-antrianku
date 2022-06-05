@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class hari_praktek extends Model
+class HariPraktek extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -15,6 +15,11 @@ class hari_praktek extends Model
 
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class, 'dokter_id', 'id');
+        return $this->belongsTo(Dokter::class, 'dokter_id', 'id') ;
+    }
+
+    public function jampraktek()
+    {
+        return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
     }
 }

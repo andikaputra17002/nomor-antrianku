@@ -15,9 +15,9 @@ class JamPraktek extends Model
         'hari_praktek_id'
     ];
     protected $table = "jam_prakteks";
-    // protected $guarded = [];
+
     public function hari_praktek()
     {
-        return $this->belongsTo(hari_praktek::class, 'hari_praktek_id', 'id');
+        return $this->belongsTo(HariPraktek::class, 'hari_praktek_id', 'id');
     }
 }

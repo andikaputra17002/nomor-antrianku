@@ -22,9 +22,9 @@ class Dokter extends Model
     public function pendaftaran(){
         return $this->hasMany(pendaftaran::class, 'dokter_id', 'id');
     }
-    public function jam_praktek(){
-        return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
-    }
+    // public function jam_praktek(){
+    //     return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
+    // }
     public function hari_praktek(){
         return $this->hasMany(hari_praktek::class, 'hari_praktek_id', 'id');
     }

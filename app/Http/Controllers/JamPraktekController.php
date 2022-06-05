@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use App\Http\Requests\JamPraktekRequest;
 
 use App\Models\hari_praktek;
+use App\Models\HariPraktek;
 use datatables;
 use App\Models\JamPraktek;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class JamPraktekController extends Controller
     public function index()
     {
     
-        $hari = hari_praktek::all();
+        $hari = HariPraktek::all();
         $data = JamPraktek::all();
         if (request()->ajax()) {
             return datatables()->of($data)
