@@ -8,6 +8,7 @@ use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JamPraktekController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\HariPraktekController;
 use App\Http\Controllers\PendaftaranController;
 
 
@@ -39,6 +40,7 @@ Route::prefix('home')->middleware(['auth:sanctum','admin'])->group(function(){
     Route::resource('pasien', PasienController::class);
     Route::resource('dokter', DokterController::class);
     Route::resource('jampraktek', JamPraktekController::class);
+    Route::resource('haripraktek', HariPraktekController::class);
     Route::resource('notifikasi', NotifikasiController::class);
     Route::resource('pendaftaran', PendaftaranController::class);
     // Route::resource('pendaftaranpemriksaan', PendaftaranController::class);

@@ -18,9 +18,8 @@ class CreateDoktersTable extends Migration
             $table->string('nama_dokter');
             $table->string('photo_dokter');
             $table->string('bidang_dokter')->nullable();
-            $table->string('hari_praktek')->nullable();
-            $table->string('jam_praktek_pagi')->nullable();
-            $table->string('jam_praktek_malam')->nullable();
+            // $table->foreignId('jam_praktek_id')->nullable();
+            // $table->foreignId('hari_praktek_id')->nullable();
             $table->timestamps();
         });
     }

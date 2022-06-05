@@ -31,9 +31,9 @@
                                 <th>Image</th>
                                 <th>Nama Dokter</th>
                                 <th>Bidang Dokter</th>
-                                <th>Hari Praktek Dokter</th>
+                                {{-- <th>Hari Praktek Dokter</th>
                                 <th>Jam Praktek Pagi</th>
-                                <th>Jam Praktek Malam</th>
+                                <th>Jam Praktek Malam</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -69,7 +69,7 @@
                                             placeholder="Masukkan Bidang Dokter">
                                         <span class="text-danger error-text bidang_dokter_error"></span>
                                     </div>
-                                    <div class="col-sm-12 data-field-col">
+                                    {{-- <div class="col-sm-12 data-field-col">
                                         <label for="data-status">Hari Praktek Dokter</label>
                                         <select class="form-control select" id="hari_praktek" name="hari_praktek[]"
                                             multiple="multiple">
@@ -82,27 +82,25 @@
                                             <option value="saptu">Saptu</option>
                                             <option value="minggu">Minggu</option>
                                         </select>
-                                    </div>
-                                    <div class="col-sm-12 data-field-col">
-                                        <label for="data-status">Jam Praktek Dokter Pagi</label>
+                                    </div> --}}
+                                    {{-- <div class="col-sm-12 data-field-col">
+                                        <label for="data-status">Jam Praktek Dokter</label>
                                         <select class="form-controll mul-select" multiple="multiple"
                                             id="jam_praktek_pagi" name="jam_praktek_pagi[]">
                                             @foreach ($datta as $data)
-                                            {{-- <option value="">Pilih Jam Praktek</option> --}}
                                             <option value="{{ $data->jam_praktek }}">{{ $data->jam_praktek }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                    <div class="col-sm-12 data-field-col">
+                                    </div> --}}
+                                    {{-- <div class="col-sm-12 data-field-col">
                                         <label for="data-status">Jam Praktek Dokter Malam</label>
                                         <select class="form-controll mul-select" multiple="multiple"
                                             id="jam_praktek_malam" name="jam_praktek_malam[]">
                                             @foreach ($datta as $data)
-                                            {{-- <option value="">Pilih Jam Praktek</option> --}}
                                             <option value="{{ $data->jam_praktek }}">{{ $data->jam_praktek }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-12 data-field-col data-list-upload">
                                         <label for="basicInputFile">Upload Image</label>
                                         <input type="file" class="form-control-file" id="photo_dokter"
@@ -137,7 +135,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-<script>
+{{-- <script>
     $(document).ready(function(){
       $(".mul-select").select2({
         placeholder: "Pilih Jam Praktek Dokter",
@@ -154,7 +152,7 @@
         width: "100%"
       });
     })
-</script>
+</script> --}}
 
 <script>
     $(document).ready(function () {
@@ -176,9 +174,9 @@
                    {data: 'photo_dokter', name: 'photo_dokter'},
                    {data: 'nama_dokter', name: 'nama_dokter'},
                    {data: 'bidang_dokter', name: 'bidang_dokter'},
-                   {data: 'hari_praktek', name: 'hari_praktek'},
-                   {data: 'jam_praktek_pagi', name: 'jam_praktek_pagi'},
-                   {data: 'jam_praktek_malam', name: 'jam_praktek_malam'},
+                //    {data: 'hari_praktek', name: 'hari_praktek'},
+                //    {data: 'jam_praktek_pagi', name: 'jam_praktek_pagi'},
+                //    {data: 'jam_praktek_malam', name: 'jam_praktek_malam'},
                    {data: 'aksi', name: 'aksi'}
                ],
                order: [
@@ -220,9 +218,9 @@
                             'success'
                             ),
                             // $('#tutup').val(null).trigger('change');
-                            $('#hari_praktek').val(null).trigger('change');
-                            $('#jam_praktek_pagi').val(null).trigger('change');
-                            $('#jam_praktek_malam').val(null).trigger('change');
+                            // $('#hari_praktek').val(null).trigger('change');
+                            // $('#jam_praktek_pagi').val(null).trigger('change');
+                            // $('#jam_praktek_malam').val(null).trigger('change');
                             $('#formdokter')[0].reset()
                             $('#formdokter').trigger("reset"); //form reset
                             $('#tutup').trigger("reset"); //form reset
@@ -259,20 +257,14 @@
                     $('#id').val(data.id)
                     $('#nama_dokter').val(data.nama_dokter)
                     $('#bidang_dokter').val(data.bidang_dokter)
-                    // $('#jam_praktek_pagi').val(data.jam_praktek_pagi)
-                    // $('#jam_praktek_malam').val(data.jam_praktek_malam)
-                    $('#hari_praktek').select2('val', data.hari_praktek.split(' , '))
-                    $('#jam_praktek_pagi').select2('val', data.jam_praktek_pagi.split(' , '))
-                    $('#jam_praktek_malam').select2('val', data.jam_praktek_malam.split(' , '))
-                    $('#modal-preview').attr('alt', 'No image available');
-                    // $('#photo_dokter').val(data.photo_dokter)
-                    // $("#modal-preview").html(`<img src="/public/photo_dokter/${data.photo_dokter}" width="100" class="img-fluid img-thumbnail">`);
+                    // $('#hari_praktek').select2('val', data.hari_praktek.split(' , '))
+                    // $('#jam_praktek_pagi').select2('val', data.jam_praktek_pagi.split(' , '))
+                    // $('#jam_praktek_malam').select2('val', data.jam_praktek_malam.split(' , '))
                     $('#modal-preview').attr('alt', 'No image available');
                     if(data.photo_dokter){
                     $('#modal-preview').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
                     $('#hidden_image').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
                     }
-                    // $('#modal-preview').attr('src','/public/photo_dokter/'+data.photo_dokter);
                     $('#tutup').trigger("reset");
                 }
             })

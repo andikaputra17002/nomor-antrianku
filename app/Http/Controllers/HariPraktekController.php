@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Requests\JamPraktekRequest;
-
+use App\Models\Dokter;
 use App\Models\hari_praktek;
-use datatables;
-use App\Models\JamPraktek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class JamPraktekController extends Controller
+class HariPraktekController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +16,8 @@ class JamPraktekController extends Controller
      */
     public function index()
     {
-    
-        $hari = hari_praktek::all();
-        $data = JamPraktek::all();
+        $dokter = Dokter::all();
+        $data = hari_praktek::all();
         if (request()->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
@@ -29,14 +25,14 @@ class JamPraktekController extends Controller
                     $button .= " <button class='hapus btn btn-outline-danger feather icon-trash' id='" . $data->id . "' > Hapus</button>";
                     return $button;
                 })
-                ->addColumn('hari_praktek_id', function($data) {
-                    return $data->hari_praktek->hari_praktek;
+                ->addColumn('dokter_id', function($data) {
+                    return $data->dokter->nama_dokter;
                 })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('jampraktek.index',compact('hari'));
+        return view('haripraktek.index',compact('dokter'));
     }
 
     /**
@@ -57,16 +53,13 @@ class JamPraktekController extends Controller
      */
     public function store(Request $request)
     {
-
         $rule = [
-            'jam_praktek_pagi' => 'required',
-            'jam_praktek_malam' => 'required',
-            'hari_praktek_id' => 'required',
+            'dokter_id' => 'required',
+            'hari_praktek' => 'required'
         ];
         $text = [
-            'jam_praktek_pagi.required' => 'Kolom jam praktek pagi dokter tidak boleh kosong',
-            'jam_praktek_malam.required' => 'Kolom jam praktek malam dokter tidak boleh kosong',
-            'hari_praktek_id.required' => 'Kolom hari praktek dokter tidak boleh kosong'
+            'dokter_id.required' => 'Kolom nama dokter tidak boleh kosong',
+            'hari_praktek.required' => 'Kolom hari praktek dokter tidak boleh kosong'
         ];
 
         $validasi = Validator::make($request->all(), $rule, $text);
@@ -74,24 +67,20 @@ class JamPraktekController extends Controller
             return response()->json(['status' => 0, 'text' => $validasi->errors()->first()], 422);
         }
 
-        $datas = new JamPraktek();
+        $datas = new hari_praktek();
         $Id = $request->id;
         $data =[
-            'jam_praktek_pagi' => $request->jam_praktek_pagi,
-            'jam_praktek_malam' => $request->jam_praktek_malam,
-            'hari_praktek_id' => $request->hari_praktek_id,
+            'dokter_id' => $request->dokter_id,
+            'hari_praktek' => $request->hari_praktek,
         ];
         // $data = $data->save();
-        $datas = JamPraktek::updateOrCreate(['id' => $Id], $data);
+        $datas = hari_praktek::updateOrCreate(['id' => $Id], $data);
 
         if ($datas) {
             return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
         } else {
             return response()->json(['text' => 'Data Gagal Disimpan', 422]);
         }
-        // return response()->json([
-        //     	'status' => 200, $datas
-        //     ]);
     }
 
     /**
@@ -113,8 +102,7 @@ class JamPraktekController extends Controller
      */
     public function edit($id)
     {
-
-        $data = JamPraktek::find($id);
+        $data = hari_praktek::find($id);
         if($data){
             return response()->json($data);
         }
@@ -127,9 +115,9 @@ class JamPraktekController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-    
+        //
     }
 
     /**
@@ -140,7 +128,7 @@ class JamPraktekController extends Controller
      */
     public function destroy($id)
     {
-        $data = JamPraktek::where('id',$id)->delete();
+        $data = hari_praktek::where('id',$id)->delete();
      
         return response()->json($data);
     }

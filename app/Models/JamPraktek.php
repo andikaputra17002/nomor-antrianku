@@ -10,8 +10,14 @@ class JamPraktek extends Model
     use HasFactory;
 
     protected $fillable = [
-        'jam_praktek'
+        'jam_praktek_pagi',
+        'jam_praktek_malam',
+        'hari_praktek_id'
     ];
     protected $table = "jam_prakteks";
     // protected $guarded = [];
+    public function hari_praktek()
+    {
+        return $this->belongsTo(hari_praktek::class, 'hari_praktek_id', 'id');
+    }
 }

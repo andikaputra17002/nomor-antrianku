@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJamPrakteksTable extends Migration
+class CreateHariPrakteksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateJamPrakteksTable extends Migration
      */
     public function up()
     {
-        Schema::create('jam_prakteks', function (Blueprint $table) {
-            $table->id('id');
-            $table->foreignId('hari_praktek_id')->nullable();
-            $table->string('jam_praktek_pagi')->nullable();
-            $table->string('jam_praktek_malam')->nullable();
+        Schema::create('hari_prakteks', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('dokter_id')->nullable();
+            $table->string('hari_praktek')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateJamPrakteksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jam_prakteks');
+        Schema::dropIfExists('hari_prakteks');
     }
 }

@@ -8,7 +8,7 @@
             <div class="content-header-left col-md-9 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-left mb-0">Data Jam Praktek Dokter</h2>
+                        <h2 class="content-header-title float-left mb-0">Data Hari Praktek Dokter</h2>
                     </div>
                 </div>
             </div>
@@ -22,13 +22,12 @@
                         id="tambah" data-bs-target="#exampleModal">
                         Tambah Data
                     </button>
-                    <table class="table zero-configuration text-center" id="datatablejam">
+                    <table class="table zero-configuration text-center" id="datatablehari">
                         <thead>
                             <tr class="">
                                 <th></th>
+                                <th>Nama Dokter</th>
                                 <th>Hari Praktek Dokter</th>
-                                <th>Jam Pagi Praktek Dokter</th>
-                                <th>Jam Malam Praktek Dokter</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -42,33 +41,28 @@
                     <div class="modal-dialog ">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal-judul">Tambah Data Jam Praktek Baru</h5>
+                                <h5 class="modal-title" id="modal-judul">Tambah Data Hari Praktek Baru</h5>
                                 <button type="button" id="tutup" class="close" data-bs-dismiss="modal"
                                     aria-label="Close"><span aria-hidden="true" id="tutup">&times;</span>
                                 </button>
                             </div>
-                            <form action="" method="POST" id="formjam" enctype="multipart/form-data">
+                            <form action="" method="POST" id="formhari" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     @csrf
                                     <div class="col-sm-12 data-field-col">
-                                        <label for="data-status">Hari Praktek Dokter</label>
+                                        <label for="data-status">Nama Dokter</label>
                                         <input type="hidden" id="id" name="id">
-                                        <select class="form-control" id="hari_praktek_id" name="hari_praktek_id">
+                                        <select class="form-control" id="dokter_id" name="dokter_id">
                                             <option value=""></option>
-                                            @foreach ($hari as $data)
-                                            <option value="{{ $data->id }}">{{ $data->hari_praktek }}</option>
+                                            @foreach ($dokter as $data)
+                                            <option value="{{ $data->id }}">{{ $data->nama_dokter }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-12 data-field-col">
-                                        <label for="data-name">Jam Pagi Praktek Dokter</label>
-                                        <input type="text" class="form-control" id="jam_praktek_pagi"
-                                            name="jam_praktek_pagi" placeholder="Masukkan Jam Praktek Dokter">
-                                    </div>
-                                    <div class="col-sm-12 data-field-col">
-                                        <label for="data-name">Jam Malam Praktek Dokter</label>
-                                        <input type="text" class="form-control" id="jam_praktek_malam"
-                                            name="jam_praktek_malam" placeholder="Masukkan Jam Praktek Dokter">
+                                        <label for="data-name">Hari Praktek Dokter</label>
+                                        <input type="text" class="form-control" id="hari_praktek" name="hari_praktek"
+                                            placeholder="Masukkan Hari Praktek Dokter">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -104,30 +98,29 @@
             });
     });
 
-    $('#datatablejam').DataTable({
+    $('#datatablehari').DataTable({
            
             serverSide : true,
             responsive : true,
             processing: true,
            ajax : {
-               url : "{{route('jampraktek.index')}}"
+               url : "{{route('haripraktek.index')}}"
            },
            columns:[
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: 'hari_praktek_id', name: 'hari_praktek_id'},
-                {data: 'jam_praktek_pagi', name: 'jam_praktek_pagi'},
-                {data: 'jam_praktek_malam', name: 'jam_praktek_malam'},
+                {data: 'dokter_id', name: 'dokter_id'},
+                {data: 'hari_praktek', name: 'hari_praktek'},
                 {data: 'aksi', name: 'aksi'}
                ]
     });
 
     // Tambah Data
-    $('#formjam').submit(function (e) {
+    $('#formhari').submit(function (e) {
             e.preventDefault();
                 var formData = new FormData(this);
                 
                 $.ajax({
-                url : "{{route('jampraktek.store')}}",
+                url : "{{route('haripraktek.store')}}",
                 type : "post",
                 data: formData,
                 cache:false,
@@ -137,16 +130,16 @@
                 success: function(response) {
                     Swal.fire(
                             'Added!',
-                            'Jam Praktek Dokter Added Successfully!',
+                            'Hari Praktek Dokter Added Successfully!',
                             'success'
                             )
                     // console.log(response);
                     // $('#tutup').click()
-                    $('#formjam')[0].reset()
-                    $('#formjam').trigger("reset"); //form reset
+                    $('#formhari')[0].reset()
+                    $('#formhari').trigger("reset"); //form reset
                     $('#tutup').trigger("reset"); //form reset
                     $('#exampleModal').modal('hide'); //modal hide
-                    $('#datatablejam').DataTable().ajax.reload()
+                    $('#datatablehari').DataTable().ajax.reload()
                 },
                 error : function (xhr) {
                     // console.log('gagal');
@@ -160,11 +153,11 @@
         e.preventDefault(); 
         $('#exampleModal').modal('show')
         let id = $(this).attr('id')
-        $('#modal-judul').html("Edit Jam Praktek Dokter"); // Judul
+        $('#modal-judul').html("Edit Hari Praktek Dokter"); // Judul
         $('#tutup').trigger("reset");
 
             $.ajax({
-                url : 'jampraktek/' + id + '/edit',
+                url : 'haripraktek/' + id + '/edit',
                 type : 'get',
                 data : {
                     id : id,
@@ -173,9 +166,8 @@
                 success: function (data) {
                     console.log(data)
                     $('#id').val(data.id)
-                    $('#jam_praktek_malam').val(data.jam_praktek_malam)
-                    $('#jam_praktek_pagi').val(data.jam_praktek_pagi)
-                    $('#hari_praktek_id').val(data.hari_praktek_id)
+                    $('#dokter_id').val(data.dokter_id)
+                    $('#hari_praktek').val(data.hari_praktek)
                     $('#tutup').trigger("reset");
                 }
             })
@@ -195,7 +187,7 @@
             }).then((result) => {
                 if(result.isConfirmed){
                     $.ajax({
-                    url: "jampraktek/" + id, //eksekusi ajax ke url ini
+                    url: "haripraktek/" + id, //eksekusi ajax ke url ini
                     type: 'delete',
                     data: {
                         id: id,
@@ -207,7 +199,7 @@
                         'Your file has been deleted.',
                         'success'
                         )
-                        $('#datatablejam').DataTable().ajax.reload()
+                        $('#datatablehari').DataTable().ajax.reload()
                     }
                     
                     })

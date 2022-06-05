@@ -35,6 +35,9 @@
                     <li><a href="{{ route('dokter.index') }}"><i class="feather icon-circle"></i><span class="menu-item"
                                 data-i18n="List">Dokter</span></a>
                     </li>
+                    <li><a href="{{ route('haripraktek.index') }}"><i class="feather icon-circle"></i><span
+                                class="menu-item" data-i18n="View">Hari Praktek Dokter</span></a>
+                    </li>
                     <li><a href="{{ route('jampraktek.index') }}"><i class="feather icon-circle"></i><span
                                 class="menu-item" data-i18n="View">Jam Praktek Dokter</span></a>
                     </li>

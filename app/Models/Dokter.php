@@ -14,19 +14,19 @@ class Dokter extends Model
         'nama_dokter',
         'photo_dokter',
         'bidang_dokter',
-        'hari_praktek',
-        'jam_praktek_pagi',
-        'jam_praktek_malam',
+        // 'hari_praktek_id',
+        // 'jam_praktek_id',
         'code',
     ];
 
-    // public function jam_praktek()
-    // {
-    //     return $this->hasMany(JamPraktek::class);
-    // }
-
     public function pendaftaran(){
         return $this->hasMany(pendaftaran::class, 'dokter_id', 'id');
+    }
+    public function jam_praktek(){
+        return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
+    }
+    public function hari_praktek(){
+        return $this->hasMany(hari_praktek::class, 'hari_praktek_id', 'id');
     }
 
 }
