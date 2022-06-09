@@ -146,9 +146,19 @@
                                         <select class="form-control select-jam" id="jam_praktek_id"
                                             name="jam_praktek_id">
                                             <option value=""></option>
-                                            @foreach ($jampraktek as $data)
-                                            <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
-                                            @endforeach
+
+                                            <optgroup label="Jam Praktek">
+                                                @foreach ($jampraktek as $data)
+                                                <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                            {{-- <optgroup label="Jam Praktek Malam">
+                                                @foreach ($jampraktek as $data)
+                                                <option value="{{ $data->id }}">{{ $data->jam_praktek_malam }}
+                                                </option>
+                                                @endforeach
+                                            </optgroup> --}}
+
                                         </select>
                                     </div>
                                     <div class="col-sm-12 data-field-col">
@@ -300,6 +310,36 @@
                 }     
             })
         });
+
+        $(document).on('click', '.periksa', function (e) {
+        e.preventDefault(); 
+        // $('#exampleModal').modal('show')
+        // let id = $(this).attr('id')
+        // $('#modal-judul').html("Edit Data Dokter"); // Judul
+        // $('#tutup').trigger("reset");
+        
+            $.ajax({
+                url : "{{route('pendaftaran.store')}}",
+                type : 'post',
+                data : {
+                    id : id,
+                    _token : "{{csrf_token()}}"
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id').val(data.id)
+                    // $('#nama_dokter').val(data.nama_dokter)
+                    // $('#bidang_dokter').val(data.bidang_dokter)
+                    // $('#modal-preview').attr('alt', 'No image available');
+                    // if(data.photo_dokter){
+                    // $('#modal-preview').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
+                    // $('#hidden_image').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
+                    // }
+                    // $('#tutup').trigger("reset");
+                }
+            })
+        });
+    
 
     $(".filter").on('change', function(){
         fildok =  $("#filter-dokter").val()

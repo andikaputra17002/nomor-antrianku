@@ -27,8 +27,8 @@
                             <tr class="">
                                 <th></th>
                                 <th>Hari Praktek Dokter</th>
-                                <th>Jam Pagi Praktek Dokter</th>
-                                <th>Jam Malam Praktek Dokter</th>
+                                <th>Jam Praktek Dokter</th>
+                                <th>Shift</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,25 +50,38 @@
                             <form action="" method="POST" id="formjam" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     @csrf
+
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-status">Hari Praktek Dokter</label>
                                         <input type="hidden" id="id" name="id">
                                         <select class="form-control" id="hari_praktek_id" name="hari_praktek_id">
                                             <option value=""></option>
-                                            @foreach ($hari as $data)
-                                            <option value="{{ $data->id }}">{{ $data->hari_praktek }}</option>
+                                            @foreach ($dokter as $nama)
+                                            <optgroup label="{{ $nama->id }}">
+                                                @foreach ($hari as $data)
+                                                @if ($nama->id == $data->dokter_id)
+                                                <option value="{{ $data->id }}">{{ $data->hari_praktek }}</option>
+                                                @endif
+                                                @endforeach
+                                            </optgroup>
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-sm-12 data-field-col">
-                                        <label for="data-name">Jam Pagi Praktek Dokter</label>
-                                        <input type="text" class="form-control" id="jam_praktek_pagi"
-                                            name="jam_praktek_pagi" placeholder="Masukkan Jam Praktek Dokter">
+                                        <label for="data-name">Jam Praktek Dokter</label>
+                                        <input type="text" class="form-control" id="jam_praktek" name="jam_praktek"
+                                            placeholder="Masukkan Jam Praktek Dokter">
                                     </div>
                                     <div class="col-sm-12 data-field-col">
-                                        <label for="data-name">Jam Malam Praktek Dokter</label>
-                                        <input type="text" class="form-control" id="jam_praktek_malam"
-                                            name="jam_praktek_malam" placeholder="Masukkan Jam Praktek Dokter">
+                                        <label for="data-name">Shift</label>
+                                        {{-- <input type="text" class="form-control" id="shift" name="shift"
+                                            placeholder="Masukkan Shift"> --}}
+                                        <select class="form-control select" id="shift" name="shift">
+                                            <option value="">Pilih Shift</option>
+                                            <option value="pagi">Pagi</option>
+                                            <option value="malam">Malam</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -115,8 +128,8 @@
            columns:[
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: 'hari_praktek_id', name: 'hari_praktek_id'},
-                {data: 'jam_praktek_pagi', name: 'jam_praktek_pagi'},
-                {data: 'jam_praktek_malam', name: 'jam_praktek_malam'},
+                {data: 'jam_praktek', name: 'jam_praktek'},
+                {data: 'shift', name: 'shift'},
                 {data: 'aksi', name: 'aksi'}
                ]
     });
@@ -174,8 +187,8 @@
                 success: function (data) {
                     console.log(data)
                     $('#id').val(data.id)
-                    $('#jam_praktek_malam').val(data.jam_praktek_malam)
-                    $('#jam_praktek_pagi').val(data.jam_praktek_pagi)
+                    $('#jam_praktek').val(data.jam_praktek)
+                    $('#shift').val(data.shift)
                     $('#hari_praktek_id').val(data.hari_praktek_id)
                     $('#tutup').trigger("reset");
                 }

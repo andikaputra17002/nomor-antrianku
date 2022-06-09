@@ -30,7 +30,7 @@ class pendaftaran extends Model
 
     public function jam_praktek()
     {
-        return $this->belongsTo(JamPraktek::class);
+        return $this->belongsTo(JamPraktek::class,'jam_praktek_id', 'id');
     }
 
 }

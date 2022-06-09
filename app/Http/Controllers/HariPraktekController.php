@@ -72,7 +72,7 @@ class HariPraktekController extends Controller
         $Id = $request->id;
         $data =[
             'dokter_id' => $request->dokter_id,
-            'hari_praktek' => implode(' , ' , $request->hari_praktek),
+            'hari_praktek' => $request->hari_praktek,
         ];
         // $data = $data->save();
         $datas = HariPraktek::updateOrCreate(['id' => $Id], $data);

@@ -140,7 +140,7 @@
                     {data: 'no_tlp', name: 'no_tlp'},
                     {data: 'jenis_kelamin', name: 'jenis_kelamin'},
                     {data: 'alamat', name: 'alamat'},
-                    {data: 'aksi', name: 'aksi', "orderable": false}
+                    {data: 'aksi', name: 'aksi'}
                 ],
                 
                 order: [

@@ -10,8 +10,8 @@ class JamPraktek extends Model
     use HasFactory;
 
     protected $fillable = [
-        'jam_praktek_pagi',
-        'jam_praktek_malam',
+        'shift',
+        'jam_praktek',
         'hari_praktek_id'
     ];
     protected $table = "jam_prakteks";
@@ -20,4 +20,9 @@ class JamPraktek extends Model
     {
         return $this->belongsTo(HariPraktek::class, 'hari_praktek_id', 'id');
     }
+
+    // public function dokter()
+    // {
+    //     return $this->belongsTo(Dokter::class, 'dokter_id', 'id') ;
+    // }
 }

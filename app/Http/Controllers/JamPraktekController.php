@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 // use App\Http\Requests\JamPraktekRequest;
 
-use App\Models\hari_praktek;
-use App\Models\HariPraktek;
 use datatables;
+use App\Models\Dokter;
 use App\Models\JamPraktek;
+use App\Models\HariPraktek;
+use App\Models\hari_praktek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,6 +22,7 @@ class JamPraktekController extends Controller
     public function index()
     {
     
+        $dokter = Dokter::all();
         $hari = HariPraktek::all();
         $data = JamPraktek::all();
         if (request()->ajax()) {
@@ -33,11 +35,14 @@ class JamPraktekController extends Controller
                 ->addColumn('hari_praktek_id', function($data) {
                     return $data->hari_praktek->hari_praktek;
                 })
+                // ->addColumn('dokter_id', function($data) {
+                //     return $data->dokter->nama_dokter;
+                // })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('jampraktek.index',compact('hari'));
+        return view('jampraktek.index',compact('hari','dokter'));
     }
 
     /**
@@ -60,13 +65,13 @@ class JamPraktekController extends Controller
     {
 
         $rule = [
-            'jam_praktek_pagi' => 'required',
-            'jam_praktek_malam' => 'required',
+            'jam_praktek' => 'required',
+            'shift' => 'required',
             'hari_praktek_id' => 'required',
         ];
         $text = [
-            'jam_praktek_pagi.required' => 'Kolom jam praktek pagi dokter tidak boleh kosong',
-            'jam_praktek_malam.required' => 'Kolom jam praktek malam dokter tidak boleh kosong',
+            'jam_praktek.required' => 'Kolom jam praktek pagi dokter tidak boleh kosong',
+            'shift.required' => 'Kolom shift dokter tidak boleh kosong',
             'hari_praktek_id.required' => 'Kolom hari praktek dokter tidak boleh kosong'
         ];
 
@@ -78,8 +83,8 @@ class JamPraktekController extends Controller
         $datas = new JamPraktek();
         $Id = $request->id;
         $data =[
-            'jam_praktek_pagi' => $request->jam_praktek_pagi,
-            'jam_praktek_malam' => $request->jam_praktek_malam,
+            'jam_praktek' => $request->jam_praktek,
+            'shift' => $request->shift,
             'hari_praktek_id' => $request->hari_praktek_id,
         ];
         // $data = $data->save();

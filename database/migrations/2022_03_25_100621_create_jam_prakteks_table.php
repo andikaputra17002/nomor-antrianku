@@ -16,8 +16,8 @@ class CreateJamPrakteksTable extends Migration
         Schema::create('jam_prakteks', function (Blueprint $table) {
             $table->id('id');
             $table->foreignId('hari_praktek_id')->nullable();
-            $table->string('jam_praktek_pagi')->nullable();
-            $table->string('jam_praktek_malam')->nullable();
+            $table->string('jam_praktek')->nullable();
+            $table->string('shift')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Dokter;
+use App\Models\HariPraktek;
 use App\Models\JamPraktek;
 use App\Models\pendaftaran;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class PendaftaranController extends Controller
         $pasien = User::where('roles','USER')->get();
         $dokter = Dokter::all();
         $jampraktek = JamPraktek::all();
+        $hari = HariPraktek::all();
         $data = pendaftaran::query();
         if ($request->fildok != null) {
             $data = $data->where('dokter_id', $request->get('fildok'));
@@ -34,7 +36,7 @@ class PendaftaranController extends Controller
         if (request()->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = " <button class='edit edit-jam btn btn-primary  feather icon-mic' id='" . $data->id . "' > Periksa</button>";
+                    $button = " <button class='periksa edit-jam btn btn-primary  feather icon-mic' id='" . $data->id . "' > Periksa</button>";
                     return $button;
                 })
                 ->addColumn('user_id', function($data) {
@@ -43,16 +45,22 @@ class PendaftaranController extends Controller
                 ->addColumn('dokter_id', function($data) {
                     return $data->dokter->nama_dokter;
                 })
+                
                 ->addColumn('jam_praktek_id', function($data) {
                     return $data->jam_praktek->jam_praktek;
+                    // return $data->jam_praktek->jam_praktek_malam;
                 })
+                // ->addColumn('jam_praktek_id', function($datas) {
+                //     // return $datas->jam_praktek->jam_praktek_pagi;
+                //     return $datas->jam_praktek->jam_praktek_malam;
+                // })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->make(true);
                 //
         }
 
-        return view('datapendaftaran.index',compact('pasien','dokter', 'jampraktek'));
+        return view('datapendaftaran.index',compact('pasien','dokter', 'jampraktek','hari'));
     }
 
     /**
@@ -65,28 +73,28 @@ class PendaftaranController extends Controller
         //
     }
 
-    private function getNoAntrian(){
-        // $jumlah_hari_ini = pendaftaran::where('tanggal_pendaftaran',date('Y-m-d'))
-        $tanggal = pendaftaran::where('tanggal_pendaftaran',Carbon::now()->format('Y-m-d'))
-        ->count();
-        // $no = pendaftaran::where('dokter_id','=',$tanggal)->count();
+    // private function getNoAntrian(){
+    //     // $jumlah_hari_ini = pendaftaran::where('tanggal_pendaftaran',date('Y-m-d'))
+    //     $tanggal = pendaftaran::where('tanggal_pendaftaran',Carbon::now()->format('Y-m-d'))
+    //     ->count();
+    //     // $no = pendaftaran::where('dokter_id','=',$tanggal)->count();
 
-        $ditambah_satu = $tanggal + 1;
-        // $ditambah_satu = $no + 1;
+    //     $ditambah_satu = $tanggal + 1;
+    //     // $ditambah_satu = $no + 1;
 
-        $hasil = "";
-        if($tanggal >= 100)
-        {
-            $hasil = "A".$ditambah_satu;
-        }else if($tanggal >= 10 && $tanggal < 100)
-        {
-            $hasil = "A-0".$ditambah_satu;
-        }else{
-            $hasil = "A-00".$ditambah_satu;
-        }
+    //     $hasil = "";
+    //     if($tanggal >= 100)
+    //     {
+    //         $hasil = "A".$ditambah_satu;
+    //     }else if($tanggal >= 10 && $tanggal < 100)
+    //     {
+    //         $hasil = "A-0".$ditambah_satu;
+    //     }else{
+    //         $hasil = "A-00".$ditambah_satu;
+    //     }
 
-        return $hasil;
-    }
+    //     return $hasil;
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -128,7 +136,7 @@ class PendaftaranController extends Controller
             'tanggal_pendaftaran' => $tanggal_pendaftaran,
             'jam_praktek_id' => $request->jam_praktek_id,
             'transaksi' => $request->transaksi,
-            'antrian' => $this->getNoAntrian(),
+            // 'antrian' => $this->getNoAntrian(),
         ];
 
         $datas = pendaftaran::updateOrCreate(['id' => $Id], $data);

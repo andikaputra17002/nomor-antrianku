@@ -43,6 +43,7 @@ Route::prefix('home')->middleware(['auth:sanctum','admin'])->group(function(){
     Route::resource('haripraktek', HariPraktekController::class);
     Route::resource('notifikasi', NotifikasiController::class);
     Route::resource('pendaftaran', PendaftaranController::class);
+    Route::resource('periksa', PeriksaController::class);
     // Route::resource('pendaftaranpemriksaan', PendaftaranController::class);
 
     // Route::get('/jumlah-pasien', [App\Http\Controllers\PendaftaranController::class, 'jumlahPasien']);
