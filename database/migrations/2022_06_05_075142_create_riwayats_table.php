@@ -15,10 +15,11 @@ class CreateRiwayatsTable extends Migration
     {
         Schema::create('riwayats', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pasien')->nullable();
-            $table->string('nama_dokter')->nullable();
-            $table->string('jam_praktek')->nullable();
-            $table->string('tangga_pendaftaran')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('dokter_id')->nullable();
+            $table->foreignId('jam_praktek_id')->nullable();
+            $table->enum('shiff', ['pagi', 'malam'])->nullable();
+            $table->date('tanggal_pendaftaran')->nullable();
             $table->string('transaksi')->nullable();
             $table->string('antrian')->nullable();
             $table->string('keluhan')->nullable();

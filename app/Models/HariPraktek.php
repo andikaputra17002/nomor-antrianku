@@ -20,6 +20,6 @@ class HariPraktek extends Model
 
     public function jampraktek()
     {
-        return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
+        return $this->hasMany(JamPraktek::class, 'hari_praktek_id', 'id');
     }
 }

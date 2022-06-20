@@ -17,17 +17,19 @@
         <div class="content-body">
             <!-- Data list view starts -->
             <section id="data-list-view" class="data-list-view-header">
+                <form action="{{route('notifikasi.store')}}" method="post">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Body</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit" id="simpan">Kirim</button>
 
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="title">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Body</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
-                </div>
-                <button class="btn btn-primary" type="submit" id="simpan">Simpan</button>
-
+                </form>
             </section>
             <!-- Data list view end -->
         </div>

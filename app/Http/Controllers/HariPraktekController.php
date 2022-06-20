@@ -77,6 +77,7 @@ class HariPraktekController extends Controller
         // $data = $data->save();
         $datas = HariPraktek::updateOrCreate(['id' => $Id], $data);
 
+
         if ($datas) {
             return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
         } else {
@@ -130,7 +131,7 @@ class HariPraktekController extends Controller
     public function destroy($id)
     {
         $data = HariPraktek::where('id',$id)->delete();
-     
+
         return response()->json($data);
     }
 }

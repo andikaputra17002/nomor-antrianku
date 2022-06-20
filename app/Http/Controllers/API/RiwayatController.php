@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Models\User;
+use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
+use App\Models\pendaftaran;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 
-class NotifikasiController extends Controller
+class RiwayatController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return view('notifikasi.index');
+        return ResponseFormatter::success(Riwayat::with('dokter','jam_praktek')->where('user_id', auth()->id())->get(),'Data antrian successfully loaded.');
     }
 
     /**
@@ -31,13 +34,11 @@ class NotifikasiController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        event(new \App\Events\BeritaInfoEvent($request->title, $request->body));
-
-        return back()->with('success', 'Notification send successfully.');
+        //
     }
 
     /**

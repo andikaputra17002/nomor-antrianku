@@ -21,6 +21,16 @@ class JamPraktek extends Model
         return $this->belongsTo(HariPraktek::class, 'hari_praktek_id', 'id');
     }
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(pendaftaran::class, 'jam_praktek_id', 'id');
+    }
+
+    public function riwayat()
+    {
+        return $this->belongsTo(Riwayat::class, 'jam_praktek_id', 'id');
+    }
+
     // public function dokter()
     // {
     //     return $this->belongsTo(Dokter::class, 'dokter_id', 'id') ;

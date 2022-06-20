@@ -17,35 +17,42 @@
         <div class="content-body">
             <section id="statistics-card">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6 col-12">
+                    @foreach($dokter as $item)
+                    <div class="col-lg-4 col-sm-6 col-12">
                         <div class="card text-center">
                             <div class="card-content">
                                 <div class="card-body">
-                                    <h2 class="text-bold-700">Nomer Antrian Yang Dipanggil</h2>
-                                    <div class="avatar avatar-xl bg-rgba-info p-50 m-0 mb-1">
-                                        <div class="avatar-content">
-                                            <p class="mb-0 text-dark text-bold-200">A-001</p>
+                                    <p class="text-muted text-bold-700">{{$item->nama_dokter}}</p>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h7 class="text-bold-700">No Antrian Sekarang</h7>
+                                            <br>
+                                            <div class="avatar avatar-xl bg-rgba-info p-50 m-0 mt-2">
+                                                <div class="avatar-content">
+                                                    <p class="mb-0 text-dark text-bold-200" id="no-{{$item->id}}">
+                                                        @isset($item->pendaftaran[0]) {{$item->pendaftaran[0]->antrian}}
+                                                        @else --- @endisset</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <h7 class="text-bold-700">Sisa Antrian</h7>
+                                            <br>
+                                            <br>
+                                            <div class="avatar avatar-xl bg-rgba-info p-50 m-0 mb-1">
+                                                <div class="avatar-content">
+                                                    <p class="mb-0 text-dark text-bold-200 id=" sisa-{{$item->id}}">0
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <button class="btn btn-info btn-next" data-id="{{$item->id}}">Selanjutnya</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="card text-center">
-                            <div class="card-content">
-                                <div class="card-body mb-1">
-                                    <h2 class="text-bold-700 mb-2">Sisa Antrian</h2>
-                                    <div class="avatar avatar-xl bg-rgba-info p-50 m-0 mb-1">
-                                        <div class="avatar-content">
-                                            <p class="mb-0 text-dark text-bold-200"></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </section>
             <!-- Data list view starts -->
@@ -77,8 +84,14 @@
                             <div class="col-md-3">
                                 <select class="filter-dokter form-control filter" id="filter-jam" name="">
                                     <option value=""></option>
-                                    @foreach ($jampraktek as $data)
-                                    <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
+                                    @foreach ($hari as $haris)
+                                    <optgroup label="{{ $haris->id }}">
+                                        @foreach ($jampraktek as $data)
+                                        @if ($haris->id == $data->hari_praktek_id)
+                                        <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
+                                        @endif
+                                        @endforeach
+                                    </optgroup>
                                     @endforeach
                                 </select>
                             </div>
@@ -139,26 +152,22 @@
                                     <div class="col-sm-12 data-field-col ">
                                         <label for="data-name">Tanggal Pendaftaran</label>
                                         <input type='text' class='datepicker form-control' id="tanggal_pendaftaran"
-                                            name="tanggal_pendaftaran" data-language='en' />
+                                            name="tanggal_pendaftaran" data-language='id' />
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Jam Periksa</label>
                                         <select class="form-control select-jam" id="jam_praktek_id"
                                             name="jam_praktek_id">
                                             <option value=""></option>
-
-                                            <optgroup label="Jam Praktek">
+                                            @foreach ($hari as $haris)
+                                            <optgroup label="{{ $haris->id }}">
                                                 @foreach ($jampraktek as $data)
+                                                @if ($haris->id == $data->hari_praktek_id)
                                                 <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
+                                                @endif
                                                 @endforeach
                                             </optgroup>
-                                            {{-- <optgroup label="Jam Praktek Malam">
-                                                @foreach ($jampraktek as $data)
-                                                <option value="{{ $data->id }}">{{ $data->jam_praktek_malam }}
-                                                </option>
-                                                @endforeach
-                                            </optgroup> --}}
-
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-12 data-field-col">
@@ -238,6 +247,9 @@
 
 <script>
     $(document).ready(function () {
+        $( '#exampleModal' ).on( 'hidden.bs.modal' , function() {
+            $( 'body' ).css( 'overflow', '' );
+        } );
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -270,7 +282,7 @@
                     {data: 'antrian', name: 'antrian'},
                     {data: 'aksi', name: 'aksi'}
                 ],
-                
+
                 // order: [[0, 'desc']]
         });
 
@@ -278,7 +290,7 @@
     $('#formpendaftaran').submit(function (e) {
             e.preventDefault();
                 var formData = new FormData(this);
-                
+
                 $.ajax({
                 url : "{{route('pendaftaran.store')}}",
                 type : "post",
@@ -301,45 +313,42 @@
                     $('#formpendaftaran')[0].reset();
                     $('#tutup').trigger("reset"); //form reset
                     $('#exampleModal').modal('hide'); //modal hide
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                     $('#exampleModal').trigger("reset"); //modal hide
                     $('#datatablependaftaran').DataTable().ajax.reload()
                 },
                 error : function (xhr) {
                     // console.log('gagal');
                     toastr.error(xhr.responseJSON.text, "GAGAL")
-                }     
+                }
             })
         });
 
         $(document).on('click', '.periksa', function (e) {
-        e.preventDefault(); 
-        // $('#exampleModal').modal('show')
-        // let id = $(this).attr('id')
-        // $('#modal-judul').html("Edit Data Dokter"); // Judul
-        // $('#tutup').trigger("reset");
-        
+        e.preventDefault();
+        var antrian = $(this).data('antrian');
             $.ajax({
-                url : "{{route('pendaftaran.store')}}",
+                url : "{{route('periksa.store')}}",
                 type : 'post',
                 data : {
-                    id : id,
+                    'antrian' : antrian,
                     _token : "{{csrf_token()}}"
                 },
                 success: function (data) {
-                    console.log(data)
-                    $('#id').val(data.id)
-                    // $('#nama_dokter').val(data.nama_dokter)
-                    // $('#bidang_dokter').val(data.bidang_dokter)
-                    // $('#modal-preview').attr('alt', 'No image available');
-                    // if(data.photo_dokter){
-                    // $('#modal-preview').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
-                    // $('#hidden_image').attr('src', SITEURL +'/public/photo_dokter/'+data.photo_dokter);
-                    // }
-                    // $('#tutup').trigger("reset");
+                    var filteredData = tabel
+                        .rows()
+                        .indexes()
+                        .filter( function ( value, index ) {
+                            return tabel.row(value).data()['antrian'] == antrian;
+                        } );
+                    tabel.rows( filteredData )
+                        .remove()
+                        .draw();
                 }
             })
         });
-    
+
 
     $(".filter").on('change', function(){
         fildok =  $("#filter-dokter").val()
@@ -369,12 +378,12 @@
 
 
     // $(document).on('click', '.edit', function (e) {
-    //     e.preventDefault(); 
+    //     e.preventDefault();
     //     $('#exampleModal').modal('show')
     //     let id = $(this).attr('id')
     //     $('#modal-judul').html("Edit Data Petugas"); // Judul
     //     $('#tutup').trigger("reset");
-        
+
     //     var SITEURL = '{{URL::to('')}}';
     //         $.ajax({
     //             url : 'pasien/' + id + '/edit',
@@ -432,11 +441,11 @@
     //                     )
     //                     $('#datatablepasien').DataTable().ajax.reload()
     //                 }
-                    
+
     //                 })
     //             }
     //         })
-            
+
     //     });
 
     //     function readURL(input, id) {
@@ -451,6 +460,47 @@
     //         $('#start').hide();
     //         }
     //     }
+</script>
+
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+    window.Echo.channel('private-broadcast')
+        .listen('.no-antrian', (res) => {
+            res['data'].forEach(item =>{
+                $('#no-'+item['dokter_id']).html(item['antrian']);
+            });
+        });
+
+</script>
+
+<script>
+    $(document).ready(function(){
+        $(".btn-next").click(function(){
+            var id = $(this).data('id');
+            var antrian = $('#no-'+id).html();
+            if(antrian !== '---'){
+                $.ajax({
+                    url : "{{route('periksa.store')}}",
+                    type : 'post',
+                    data : {
+                        'antrian' : antrian,
+                        _token : "{{csrf_token()}}"
+                    },
+                    success: function (data) {
+                        var filteredData = tabel
+                            .rows()
+                            .indexes()
+                            .filter( function ( value, index ) {
+                                return tabel.row(value).data()['antrian'] == antrian;
+                            } );
+                        tabel.rows( filteredData )
+                            .remove()
+                            .draw();
+                    }
+                })
+            }
+        });
+    });
 </script>
 @endpush
 

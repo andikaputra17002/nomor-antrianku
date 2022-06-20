@@ -18,6 +18,7 @@ class CreatePendaftaransTable extends Migration
             $table->foreignId('user_id')->nullable();
             $table->foreignId('dokter_id')->nullable();
             $table->foreignId('jam_praktek_id')->nullable();
+            $table->enum('shiff', ['pagi', 'malam'])->nullable();
             $table->date('tanggal_pendaftaran')->nullable();
             $table->string('transaksi')->nullable();
             $table->string('antrian')->nullable();

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\AntrianController;
+use App\Http\Controllers\API\PendaftaranController;
+use App\Http\Controllers\API\RiwayatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
@@ -25,9 +28,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('user', [UserController::class, 'updateProfile']);
     Route::post('user/photo', [UserController::class, 'uploadPhoto']);
     Route::post('logout', [UserController::class, 'logout']);
-    // Route::get('search/{name}', [DokterController::class, 'search']);
 
+    //Resources
+    Route::resources([
+        'dokter' => DokterController::class,
+        'pendaftaran' => PendaftaranController::class,
+        'antrian' => AntrianController::class,
+        'riwayat' => RiwayatController::class,
+    ]);
 });
-Route::get('dokter', [UserController::class, 'dataDokter']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);

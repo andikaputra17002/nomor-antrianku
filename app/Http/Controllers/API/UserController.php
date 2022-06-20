@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     // use PasswordValidationRules;
-    
+
     public function login(Request $request)
     {
         try {
@@ -76,7 +76,7 @@ class UserController extends Controller
             $user = User::where('email', $request->email)->first();
 
             $tokenResult = $user->createToken('authToken')->plainTextToken;
-            
+
             return ResponseFormatter::success([
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
@@ -89,7 +89,7 @@ class UserController extends Controller
             ],'Authentication Failed', 500);
         }
     }
-    
+
     public function logout(Request $request)
     {
         $token = $request->user()->currentAccessToken()->delete();
@@ -124,7 +124,7 @@ class UserController extends Controller
         // ];
         // $data = User::select('name')->get();
         // $data = DB::table('users')
-        
+
         // return ResponseFormatter::success($data,'Data profile user berhasil diambil');
     }
 
@@ -150,25 +150,5 @@ class UserController extends Controller
             return ResponseFormatter::success([$file],'File successfully uploaded');
         }
     }
-
-    public function dataDokter(Request $request)
-    {
-        // return ResponseFormatter::success($request->dokter(),'Data dokter berhasil diambil');
-        // $data = [
-        //     'name' => $request->name,
-        //     'no_tlp' => $request->no_tlp,
-        //     'jenis_kelamin' => $request->jenis_kelamin,
-        //     'alamat' => $request->alamat,
-        // ];
-        $data = DB::table('dokters')
-        ->select('nama_dokter','bidang_dokter','photo_dokter')->get();
-        // ->orderBy('name','alamat', 'desc')->get();
-        return ResponseFormatter::success($data,'Data dokter berhasil diambil');
-    }
-    // public function search($name)
-    // {
-    //     return Dokter::where("name","like","%".$name."%")->get();
-    // }
-
 
 }

@@ -1,43 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Models\User;
+use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
+use App\Models\Dokter;
+use App\Models\pendaftaran;
 use Illuminate\Http\Request;
 
-class NotifikasiController extends Controller
+class AntrianController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('notifikasi.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if ($request->has('now')){
+            return ResponseFormatter::success(pendaftaran::now(),'Data antrian successfully loaded.');
+        }
+        return ResponseFormatter::success(pendaftaran::with('dokter','jam_praktek')->where('user_id', auth()->id())->get(),'Data antrian successfully loaded.');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        event(new \App\Events\BeritaInfoEvent($request->title, $request->body));
-
-        return back()->with('success', 'Notification send successfully.');
+        //
     }
 
     /**
@@ -47,17 +41,6 @@ class NotifikasiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

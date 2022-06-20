@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,13 +21,19 @@ class Dokter extends Model
     ];
 
     public function pendaftaran(){
-        return $this->hasMany(pendaftaran::class, 'dokter_id', 'id');
+        if ((int)substr(Carbon::now()->toTimeString(), 0, 2) < 12) {
+            return $this->hasMany(pendaftaran::class, 'dokter_id', 'id')->where('shiff', 'pagi')->oldest();
+        }
+        return $this->hasMany(pendaftaran::class, 'dokter_id', 'id')->where('shiff', 'malam')->oldest();
+    }
+
+    public function riwayat(){
+        return $this->hasMany(Riwayat::class, 'dokter_id', 'id');
     }
     // public function jam_praktek(){
     //     return $this->hasMany(JamPraktek::class, 'jam_praktek_id', 'id');
     // }
     public function hari_praktek(){
-        return $this->hasMany(hari_praktek::class, 'hari_praktek_id', 'id');
+        return $this->hasMany(HariPraktek::class, 'dokter_id', 'id');
     }
-
 }

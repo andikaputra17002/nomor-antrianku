@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pendaftaran;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PeriksaController extends Controller
 {
@@ -35,25 +37,18 @@ class PeriksaController extends Controller
      */
     public function store(Request $request)
     {
-        $datas = new Riwayat();
-        $Id = $request->id;
-        // $tanggal_pendaftaran = Carbon::parse( $request->tanggal_pendaftaran)->format('Y-m-d');
-        $data =[
-            'user_id' => $request->user_id,
-            'dokter_id' => $request->dokter_id,
-            'tanggal_pendaftaran' => $tanggal_pendaftaran,
-            'jam_praktek_id' => $request->jam_praktek_id,
-            'transaksi' => $request->transaksi,
-            // 'antrian' => $this->getNoAntrian(),
-        ];
-
-        $datas = pendaftaran::updateOrCreate(['id' => $Id], $data);
-        // ddd($datas);
-        if ($datas) {
-            return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
-        } else {
-            return response()->json(['text' => 'Data Gagal Disimpan', 422]);
+        if ($pendaftaran = pendaftaran::where('antrian', $request->antrian)->first()){
+            $pendaftaran = $pendaftaran->toArray();
+            unset($pendaftaran['id']);
+            $pendaftaran['status'] = true;
+            Riwayat::create($pendaftaran);
+            if ($pendaftaran) {
+                return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
+            } else {
+                return response()->json(['text' => 'Data Gagal Disimpan', 422]);
+            }
         }
+        return response()->json(['text' => 'Data Gagal Disimpan', 422]);
     }
 
     /**

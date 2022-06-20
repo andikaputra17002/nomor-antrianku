@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Dokter;
 use App\Models\pendaftaran;
+use App\Models\Riwayat;
 use App\Observers\DokterObserver;
 use App\Observers\PendaftaranObserver;
+use App\Observers\RiwayatObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -33,5 +35,6 @@ class EventServiceProvider extends ServiceProvider
     {
         Dokter::observe(DokterObserver::class);
         pendaftaran::observe(PendaftaranObserver::class);
+        Riwayat::observe(RiwayatObserver::class);
     }
 }

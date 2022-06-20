@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\FcmNotification;
+use App\Http\Controllers\PeriksaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DokterController;
@@ -10,9 +12,6 @@ use App\Http\Controllers\JamPraktekController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\HariPraktekController;
 use App\Http\Controllers\PendaftaranController;
-
-
-
 
 
 /*
@@ -34,7 +33,10 @@ Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('home')->middleware(['auth:sanctum','admin'])->group(function(){
+Route::get('/debug', function () {
+    event(new \App\Events\NomorAntrianEvent());
+});
+Route::prefix('home')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::resource('user', PetugasController::class);
     Route::resource('pasien', PasienController::class);
@@ -47,6 +49,6 @@ Route::prefix('home')->middleware(['auth:sanctum','admin'])->group(function(){
     // Route::resource('pendaftaranpemriksaan', PendaftaranController::class);
 
     // Route::get('/jumlah-pasien', [App\Http\Controllers\PendaftaranController::class, 'jumlahPasien']);
-   
+
     // Route::get('/notifikasi', [App\Http\Controllers\NotifikasiController::class, 'index'])->name('notifikasi');
 });

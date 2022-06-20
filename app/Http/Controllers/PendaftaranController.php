@@ -17,12 +17,12 @@ class PendaftaranController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $pasien = User::where('roles','USER')->get();
-        $dokter = Dokter::all();
+        $dokter = Dokter::with('pendaftaran')->get();
         $jampraktek = JamPraktek::all();
         $hari = HariPraktek::all();
         $data = pendaftaran::query();
@@ -36,7 +36,7 @@ class PendaftaranController extends Controller
         if (request()->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = " <button class='periksa edit-jam btn btn-primary  feather icon-mic' id='" . $data->id . "' > Periksa</button>";
+                    $button = " <button class='periksa edit-jam btn btn-primary  feather icon-mic' data-antrian='" . $data->antrian . "' > Periksa</button>";
                     return $button;
                 })
                 ->addColumn('user_id', function($data) {
@@ -45,7 +45,7 @@ class PendaftaranController extends Controller
                 ->addColumn('dokter_id', function($data) {
                     return $data->dokter->nama_dokter;
                 })
-                
+
                 ->addColumn('jam_praktek_id', function($data) {
                     return $data->jam_praktek->jam_praktek;
                     // return $data->jam_praktek->jam_praktek_malam;
@@ -59,7 +59,6 @@ class PendaftaranController extends Controller
                 ->make(true);
                 //
         }
-
         return view('datapendaftaran.index',compact('pasien','dokter', 'jampraktek','hari'));
     }
 
@@ -130,9 +129,11 @@ class PendaftaranController extends Controller
         $datas = new pendaftaran();
         $Id = $request->id;
         $tanggal_pendaftaran = Carbon::parse( $request->tanggal_pendaftaran)->format('Y-m-d');
+        $jam = JamPraktek::find($request->jam_praktek_id);
         $data =[
             'user_id' => $request->user_id,
             'dokter_id' => $request->dokter_id,
+            'shiff' => $jam->shift,
             'tanggal_pendaftaran' => $tanggal_pendaftaran,
             'jam_praktek_id' => $request->jam_praktek_id,
             'transaksi' => $request->transaksi,

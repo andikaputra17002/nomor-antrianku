@@ -18,12 +18,16 @@ class PendaftaranObserver
         $count = pendaftaran::where('dokter_id', $pendaftaran->dokter_id)
             ->whereDate('tanggal_pendaftaran', $pendaftaran->tanggal_pendaftaran)
             ->where('jam_praktek_id', $pendaftaran->jam_praktek_id)
+            ->where('shiff', $pendaftaran->shiff)
             ->where('id', '!=', $pendaftaran->id)->count() + 1;
 
-        $jam = JamPraktek::find( $pendaftaran->jam_praktek_id)->jam_praktek;
-        $on_int = (int) substr($jam, 0, 2);
+//        $jam = JamPraktek::find( $pendaftaran->jam_praktek_id)->jam_praktek;
+//        $on_int = (int) substr($jam, 0, 2);
         $antrian = $pendaftaran->dokter->code .'-'. sprintf("%03d", $count);
-        if ($on_int >= 18){
+//        if ($on_int >= 18){
+//            $antrian = $pendaftaran->dokter->code .'-'. sprintf("%03d", $count).'-M';
+//        }
+        if ($pendaftaran->shiff == 'malam'){
             $antrian = $pendaftaran->dokter->code .'-'. sprintf("%03d", $count).'-M';
         }
         $pendaftaran->update([
@@ -39,7 +43,7 @@ class PendaftaranObserver
      */
     public function updated(pendaftaran $pendaftaran)
     {
-        //
+        event(new \App\Events\NomorAntrianEvent());
     }
 
     /**
@@ -50,7 +54,7 @@ class PendaftaranObserver
      */
     public function deleted(pendaftaran $pendaftaran)
     {
-        //
+        event(new \App\Events\NomorAntrianEvent());
     }
 
     /**

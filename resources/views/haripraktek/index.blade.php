@@ -118,7 +118,7 @@
     });
 
     $('#datatablehari').DataTable({
-           
+
             serverSide : true,
             responsive : true,
             processing: true,
@@ -137,7 +137,7 @@
     $('#formhari').submit(function (e) {
             e.preventDefault();
                 var formData = new FormData(this);
-                
+
                 $.ajax({
                 url : "{{route('haripraktek.store')}}",
                 type : "post",
@@ -164,13 +164,13 @@
                 error : function (xhr) {
                     // console.log('gagal');
                     toastr.error(xhr.responseJSON.text, "GAGAL")
-                }   
+                }
             })
         });
 
         // Edit
         $(document).on('click', '.edit', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         $('#exampleModal').modal('show')
         let id = $(this).attr('id')
         $('#modal-judul').html("Edit Hari Praktek Dokter"); // Judul
@@ -193,7 +193,7 @@
                 }
             })
         });
-    
+
     // Hapus
     $(document).on('click', '.hapus', function () {
             id = $(this).attr('id');
@@ -222,11 +222,11 @@
                         )
                         $('#datatablehari').DataTable().ajax.reload()
                     }
-                    
+
                     })
                 }
             })
-            
+
         });
 
 </script>
