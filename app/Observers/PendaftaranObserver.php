@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\JamPraktek;
 use App\Models\pendaftaran;
+use App\Models\Riwayat;
 
 class PendaftaranObserver
 {
@@ -15,11 +16,18 @@ class PendaftaranObserver
      */
     public function created(pendaftaran $pendaftaran)
     {
-        $count = pendaftaran::where('dokter_id', $pendaftaran->dokter_id)
+        $pendaftarans_count = pendaftaran::where('dokter_id', $pendaftaran->dokter_id)
             ->whereDate('tanggal_pendaftaran', $pendaftaran->tanggal_pendaftaran)
             ->where('jam_praktek_id', $pendaftaran->jam_praktek_id)
             ->where('shiff', $pendaftaran->shiff)
-            ->where('id', '!=', $pendaftaran->id)->count() + 1;
+            ->where('id', '!=', $pendaftaran->id)->count();
+        $riwayat_count = Riwayat::where('dokter_id', $pendaftaran->dokter_id)
+            ->whereDate('tanggal_pendaftaran', $pendaftaran->tanggal_pendaftaran)
+            ->where('jam_praktek_id', $pendaftaran->jam_praktek_id)
+            ->where('shiff', $pendaftaran->shiff)
+            ->where('id', '!=', $pendaftaran->id)->count();
+        //count all
+        $count = ($pendaftarans_count + $riwayat_count) + 1;
 
 //        $jam = JamPraktek::find( $pendaftaran->jam_praktek_id)->jam_praktek;
 //        $on_int = (int) substr($jam, 0, 2);

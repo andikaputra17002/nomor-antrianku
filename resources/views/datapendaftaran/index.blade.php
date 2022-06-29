@@ -107,7 +107,7 @@
                                 <th>Jam Periksa</th>
                                 <th>BPJS/Non-BPJS</th>
                                 <th>Nomor Antrian</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -215,7 +215,7 @@
 <script>
     $(document).ready(function(){
         $(".select-name").select2({
-            // dropdownParent: $('#formpendaftaran'),
+            dropdownParent: $('#exampleModal'),
             width: "100%",
             tags: true,
             // allowClear: true,
@@ -224,14 +224,14 @@
 
     $(document).ready(function(){
       $(".select-dokter").select2({
-        // dropdownParent: $('#exampleModal'),
+        dropdownParent: $('#exampleModal'),
         width: "100%",
         tags: true,
       });
     });
     $(document).ready(function(){
       $(".select-jam").select2({
-        // dropdownParent: $('#exampleModal'),
+        dropdownParent: $('#exampleModal'),
         width: "100%",
         tags: true,
       });
@@ -280,7 +280,7 @@
                     {data: 'jam_praktek_id', name: 'jam_praktek_id'},
                     {data: 'transaksi', name: 'transaksi'},
                     {data: 'antrian', name: 'antrian'},
-                    {data: 'aksi', name: 'aksi'}
+                    // {data: 'aksi', name: 'aksi'}
                 ],
 
                 // order: [[0, 'desc']]
@@ -361,105 +361,6 @@
         tabel.ajax.reload(null,false)
     })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // $(document).on('click', '.edit', function (e) {
-    //     e.preventDefault();
-    //     $('#exampleModal').modal('show')
-    //     let id = $(this).attr('id')
-    //     $('#modal-judul').html("Edit Data Petugas"); // Judul
-    //     $('#tutup').trigger("reset");
-
-    //     var SITEURL = '{{URL::to('')}}';
-    //         $.ajax({
-    //             url : 'pasien/' + id + '/edit',
-    //             type : 'get',
-    //             data : {
-    //                 id : id,
-    //                 _token : "{{csrf_token()}}"
-    //             },
-    //             success: function (data) {
-    //                 console.log(data)
-    //                 $('#id').val(data.id)
-    //                 $('#name').val(data.name)
-    //                 $('#email').val(data.email)
-    //                 $('#password').val(data.password)
-    //                 $('#password_confirmation').val(data.password_confirmation)
-    //                 $('#alamat').val(data.alamat)
-    //                 $('#jenis_kelamin').val(data.jenis_kelamin)
-    //                 $('#no_tlp').val(data.no_tlp)
-    //                 // $("#photoProfile").html(`<img src="/public/files/${data.photoProfile}" width="100" class="img-fluid img-thumbnail">`);
-    //                 $('#modal-preview').attr('alt', 'No image available');
-    //                 if(data.photoProfile){
-    //                 $('#modal-preview').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-    //                 $('#hidden_image').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-    //                 }
-    //                 $('#tutup').trigger("reset");
-    //             }
-    //         })
-    //     });
-
-    // // Hapus
-    // $(document).on('click', '.hapus', function () {
-    //         id = $(this).attr('id');
-    //         Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "You won't be able to revert this!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, delete it!'
-    //         }).then((result) => {
-    //             if(result.isConfirmed){
-    //                 $.ajax({
-    //                 url: "pasien/" + id, //eksekusi ajax ke url ini
-    //                 type: 'delete',
-    //                 data: {
-    //                     id: id,
-    //                     "_token" : "{{csrf_token()}}"
-    //                 },
-    //                 success: function (data) { //jika sukses
-    //                     Swal.fire(
-    //                     'Deleted!',
-    //                     'Your file has been deleted.',
-    //                     'success'
-    //                     )
-    //                     $('#datatablepasien').DataTable().ajax.reload()
-    //                 }
-
-    //                 })
-    //             }
-    //         })
-
-    //     });
-
-    //     function readURL(input, id) {
-    //     id = id || '#modal-preview';
-    //     if (input.files && input.files[0]) {
-    //     var reader = new FileReader();
-    //     reader.onload = function (e) {
-    //     $(id).attr('src', e.target.result);
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    //     $('#modal-preview').removeClass('hidden');
-    //         $('#start').hide();
-    //         }
-    //     }
 </script>
 
 <script src="{{ asset('js/app.js') }}"></script>

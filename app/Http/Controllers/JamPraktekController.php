@@ -35,9 +35,6 @@ class JamPraktekController extends Controller
                 ->addColumn('hari_praktek_id', function($data) {
                     return $data->hari_praktek->hari_praktek;
                 })
-                // ->addColumn('dokter_id', function($data) {
-                //     return $data->dokter->nama_dokter;
-                // })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->make(true);

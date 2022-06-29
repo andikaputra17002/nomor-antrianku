@@ -35,10 +35,10 @@ class PendaftaranController extends Controller
         $data =$data->whereDate('tanggal_pendaftaran', Carbon::today())->get();
         if (request()->ajax()) {
             return datatables()->of($data)
-                ->addColumn('aksi', function ($data) {
-                    $button = " <button class='periksa edit-jam btn btn-primary  feather icon-mic' data-antrian='" . $data->antrian . "' > Periksa</button>";
-                    return $button;
-                })
+                // ->addColumn('aksi', function ($data) {
+                //     $button = " <button class='periksa edit-jam btn btn-primary  feather icon-mic' data-antrian='" . $data->antrian . "' > Periksa</button>";
+                //     return $button;
+                // })
                 ->addColumn('user_id', function($data) {
                     return $data->user->name;
                 })
@@ -48,12 +48,7 @@ class PendaftaranController extends Controller
 
                 ->addColumn('jam_praktek_id', function($data) {
                     return $data->jam_praktek->jam_praktek;
-                    // return $data->jam_praktek->jam_praktek_malam;
                 })
-                // ->addColumn('jam_praktek_id', function($datas) {
-                //     // return $datas->jam_praktek->jam_praktek_pagi;
-                //     return $datas->jam_praktek->jam_praktek_malam;
-                // })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->make(true);
@@ -71,30 +66,6 @@ class PendaftaranController extends Controller
     {
         //
     }
-
-    // private function getNoAntrian(){
-    //     // $jumlah_hari_ini = pendaftaran::where('tanggal_pendaftaran',date('Y-m-d'))
-    //     $tanggal = pendaftaran::where('tanggal_pendaftaran',Carbon::now()->format('Y-m-d'))
-    //     ->count();
-    //     // $no = pendaftaran::where('dokter_id','=',$tanggal)->count();
-
-    //     $ditambah_satu = $tanggal + 1;
-    //     // $ditambah_satu = $no + 1;
-
-    //     $hasil = "";
-    //     if($tanggal >= 100)
-    //     {
-    //         $hasil = "A".$ditambah_satu;
-    //     }else if($tanggal >= 10 && $tanggal < 100)
-    //     {
-    //         $hasil = "A-0".$ditambah_satu;
-    //     }else{
-    //         $hasil = "A-00".$ditambah_satu;
-    //     }
-
-    //     return $hasil;
-    // }
-
     /**
      * Store a newly created resource in storage.
      *

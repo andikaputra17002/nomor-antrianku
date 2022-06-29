@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('no_tlp')->nullable();
             $table->string('jenis_kelamin')->nullable();
             $table->string('alamat')->nullable();
+            $table->string('no_bpjs')->nullable();
             $table->string('roles')->default('USER');
             $table->rememberToken();
             $table->timestamps();

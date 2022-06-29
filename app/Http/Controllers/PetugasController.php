@@ -52,11 +52,10 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
-        // ddd($request);
-
+      
         $rule = [
             'name' => 'required',
-            'email' => 'required|unique:users,email',
+            'email' => 'required',
             'password' =>'required',
             'alamat' => 'required',
             'roles' =>'required',
@@ -67,12 +66,14 @@ class PetugasController extends Controller
         $text = [
             'name.required' => 'Kolom nama tidak boleh kosong',
             'email.required' => 'Kolom email tidak boleh kosong',
-            'email.unique' => 'Email sudah terdaftar',
+            // 'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Kolom password tidak boleh kosong',
             'alamat.required' => 'Kolom alamat tidak boleh kosong',
             'roles.required' => 'Kolom roles tidak boleh kosong',
             'jenis_kelamin.required' => 'Kolom janis kelamin tidak boleh kosong',
-            'no_tlp.required' => 'Kolom nomor telepon tidak boleh kosong'
+            'no_tlp.required' => 'Kolom nomor telepon tidak boleh kosong',
+            'photoProfile.mimes' => 'Kolom image harus berupa file dengan jenis: jpeg, png, jpg',
+            'photoProfile.image' => 'Kolom image harus berupa gambar'
         ];
 
         $validasi = Validator::make($request->all(), $rule, $text);
@@ -85,7 +86,8 @@ class PetugasController extends Controller
         $data =[
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            // 'password' => Hash::make($request->password),
+            'password' => $request->password,
             'alamat' => $request->alamat,
             'roles' => $request->roles,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -103,18 +105,14 @@ class PetugasController extends Controller
             $data['photoProfile'] = "$profileImage";
         }
          
-        $datas = User::updateOrCreate(['id' => $Id], $data); 
+        $datas = User::updateOrCreate(['id' => $Id], $data);
+
         if ($datas) {
             return response()->json(['status' => 'Data Berhasil Disimpan', 200]);
         } else {
             return response()->json(['text' => 'Data Gagal Disimpan', 422]);
         } 
-        // $data = $data->save();
-        // return response()->json([
-        //     	'status' => 200,$datas
-        // ]);
     }
-
     /**
      * Display the specified resource.
      *
@@ -149,30 +147,9 @@ class PetugasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        
-        // dd($request);
-        // // $filename ='';
-        // if ($request->file('photoProfile')) {
-        //     $data['photoProfile'] = $request->file('photoProfile')->store('files', 'public');
-        // }
-        // $data->name = $request->name;
-        // $data->email = $request->email;
-        // $data->alamat = $request->alamat;
-        // $data->roles = $request->roles;
-        // $data->jenis_kelamin = $request->jenis_kelamin;
-        // $data->no_tlp = $request->no_tlp;
-        // // $data->photoProfile = $filename;
-        // $data->password = Hash::make($request->password);
-        // // if ($request->password != null) {
-        // // }
-        // $data->update();
-
-        // // return redirect()->route('petugas.index');
-        // return response()->json([
-		// 	'status' => 200,
-		// ]);
+       
     }
 
     /**

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Riwayat extends Model
 {
@@ -20,6 +21,10 @@ class Riwayat extends Model
         'status',
     ];
     protected $guarded = [];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function dokter()
     {
@@ -30,4 +35,5 @@ class Riwayat extends Model
     {
         return $this->hasOne(JamPraktek::class, 'id', 'jam_praktek_id');
     }
+    
 }

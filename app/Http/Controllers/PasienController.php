@@ -17,7 +17,6 @@ class PasienController extends Controller
      */
     public function index()
     {
-        // $pasien = User::get();
         $pasien = User::where('roles','USER')->get();
         if (request()->ajax()) {
             return datatables()->of($pasien)
@@ -54,9 +53,10 @@ class PasienController extends Controller
     {
         $rule = [
             'name' => 'required',
-             'email' => 'required|unique:users,email',
-             'password' =>'required',
+            'email' => 'required',
+            'password' =>'required',
             'alamat' => 'required',
+            'no_bpjs' => 'required',
             'jenis_kelamin' => 'required',
             'no_tlp' => 'required',
 
@@ -64,11 +64,12 @@ class PasienController extends Controller
         $text = [
             'name.required' => 'Kolom nama tidak boleh kosong',
             'email.required' => 'Kolom email tidak boleh kosong',
-            'email.unique' => 'Email sudah terdaftar',
+            // 'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Kolom password tidak boleh kosong',
             'alamat.required' => 'Kolom alamat tidak boleh kosong',
+            'no_bpjs.required' => 'Kolom nomer bpjs tidak boleh kosong',
             'jenis_kelamin.required' => 'Kolom janis kelamin tidak boleh kosong',
-            'no_tlp.required' => 'Kolom nomor telepon tidak boleh kosong'
+            'no_tlp.required' => 'Kolom nomor telepon tidak boleh kosong',
         ];
 
         $validasi = Validator::make($request->all(), $rule, $text);
@@ -83,6 +84,7 @@ class PasienController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'alamat' => $request->alamat,
+            'no_bpjs' => $request->no_bpjs,
             'jenis_kelamin' => $request->jenis_kelamin,
             'no_tlp' => $request->no_tlp,
         ];
@@ -93,9 +95,6 @@ class PasienController extends Controller
         } else {
             return response()->json(['text' => 'Data Gagal Disimpan', 422]);
         }
-        // return response()->json([
-        //     	'status' => 200,$datas
-        // ]);
     }
 
     /**

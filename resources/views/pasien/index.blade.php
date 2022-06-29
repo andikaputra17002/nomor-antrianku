@@ -31,6 +31,7 @@
                                 <th>No Telepon</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Alamat</th>
+                                <th>No BPJS</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -64,8 +65,14 @@
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Password</label>
-                                        <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="Masukkan Password">
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                placeholder="Masukkan Password">
+                                            <div class="input-group-addon ">
+                                                <a href=""><i class="fa fa-eye-slash mx-1 my-1"
+                                                        aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class=" col-sm-12 data-field-col">
                                         <label for="data-name">Password Confirmation</label>
@@ -76,6 +83,11 @@
                                         <label for="data-name">Alamat</label>
                                         <input type="text" class="form-control" name="alamat" id="alamat"
                                             placeholder="Masukkan Alamat">
+                                    </div>
+                                    <div class="col-sm-12 data-field-col">
+                                        <label for="data-name">No BPJS</label>
+                                        <input type="text" class="form-control" name="no_bpjs" id="no_bpjs"
+                                            placeholder="Masukkan nomer bpjs">
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-status">Jenis Kelamin</label>
@@ -140,6 +152,7 @@
                     {data: 'no_tlp', name: 'no_tlp'},
                     {data: 'jenis_kelamin', name: 'jenis_kelamin'},
                     {data: 'alamat', name: 'alamat'},
+                    {data: 'no_bpjs', name: 'no_bpjs'},
                     {data: 'aksi', name: 'aksi'}
                 ],
                 
@@ -205,6 +218,7 @@
                     $('#password').val(data.password)
                     $('#password_confirmation').val(data.password_confirmation)
                     $('#alamat').val(data.alamat)
+                    $('#no_bpjs').val(data.no_bpjs)
                     $('#jenis_kelamin').val(data.jenis_kelamin)
                     $('#no_tlp').val(data.no_tlp)
                     // $("#photoProfile").html(`<img src="/public/files/${data.photoProfile}" width="100" class="img-fluid img-thumbnail">`);
@@ -266,6 +280,23 @@
             $('#start').hide();
             }
         }
+</script>
+
+<script>
+    $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
 </script>
 @endpush
 

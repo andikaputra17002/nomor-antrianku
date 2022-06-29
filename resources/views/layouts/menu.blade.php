@@ -29,6 +29,10 @@
             <li class=" nav-item"><a href="{{ route('pendaftaran.index') }}"><i class="feather icon-file-text"></i><span
                         class="menu-title" data-i18n="Chat">Data Pendaftaran</span></a>
             </li>
+            <li class=" nav-item"><a href="{{ route('periksa.index') }}"><i
+                        class="ficon feather icon-check-square"></i><span class="menu-title" data-i18n="Chat">Riwayat
+                        Pendaftaran</span></a>
+            </li>
             <li class=" nav-item"><a href="#"><i class="fa fa-user-md"></i><span class="menu-title"
                         data-i18n="User">Data Dokter</span></a>
                 <ul class="menu-content">

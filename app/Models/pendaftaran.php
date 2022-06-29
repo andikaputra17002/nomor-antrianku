@@ -44,5 +44,6 @@ class pendaftaran extends Model
         }
         return $query->with('dokter', 'jam_praktek')->select('dokter_id', 'antrian')->where('shiff', 'malam')->groupBy('dokter_id')->get();
     }
+    
 
 }

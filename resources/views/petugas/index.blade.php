@@ -52,7 +52,7 @@
                                 <form action="" method="post" id="formpetugas" enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-sm-12 data-field-col">
-                                        <label for="data-name">Name</label>
+                                        <label for="data-name">Nama Petugas</label>
                                         <input type="text" class="form-control" id="name" name="name"
                                             placeholder="Masukkan Nama Petugas">
                                         <input type="hidden" id="id" name="id">
@@ -64,8 +64,13 @@
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Password</label>
-                                        <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="Masukkan Password">
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                placeholder="Masukkan Password">
+                                            <div class="input-group-addon px-1 py-1">
+                                                <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Password Confirmation</label>
@@ -119,6 +124,8 @@
                     </div>
                 </div>
 
+                {{-- update --}}
+
                 <!-- add new sidebar ends -->
             </section>
             <!-- Data list view end -->
@@ -149,12 +156,6 @@
                 url : "{{route('user.index')}}"
             },
             columns:[
-                    // {
-                    //     "data" :null, "sortable": false,
-                    //     render : function (data, type, row, meta,) {
-                    //         return meta.row + meta.settings._iDisplayStart + 1 
-                    //     }
-                    // },
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                     {data: 'photoProfile', name: 'photoProfile'},
                     {data: 'name', name: 'name'},
@@ -189,6 +190,7 @@
                     // $('#tutup').click()
                     $('#formpetugas')[0].reset()
                     $('#formpetugas').trigger("reset"); //form reset
+                    $('#modal-preview').val(null); //form reset
                     $('#tutup').trigger("reset"); //form reset
                     $('#exampleModal').modal('hide'); //modal hide
                     $('#datatable2').DataTable().ajax.reload()
@@ -200,7 +202,8 @@
                 
             })
         });
-        
+
+
         var SITEURL = '{{URL::to('')}}';
         $(document).on('click', '.edit', function (e) {
         e.preventDefault(); 
@@ -237,11 +240,6 @@
             })
         });
         
-        // Hapus
-        // if(data.photoProfile){
-        // $('#modal-preview').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-        // $('#hidden_image').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-        // }
     $(document).on('click', '.hapus', function () {
             id = $(this).attr('id');
             Swal.fire({
@@ -289,7 +287,22 @@
         }
         }
 </script>
-
+<script>
+    $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+</script>
 @endpush
 
 @endsection

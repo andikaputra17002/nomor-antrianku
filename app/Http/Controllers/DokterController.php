@@ -18,14 +18,13 @@ class DokterController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function index()
+    public function index()
     {
 
         $datta = JamPraktek::all();
-        // $dokter = Dokter::all();
-        // $pilih = $dokter->pluck('jam_praktek')->toArray();
+        $datadokter = Dokter::all();
         if (request()->ajax()) {
-            return datatables()->of(Dokter::all())
+            return datatables()->of($datadokter)
                 ->addColumn('aksi', function ($dokter) {
                     $button = " <button class='edit btn btn-primary feather icon-edit-1' id='" . $dokter->id . "' >Edit</button>";
                     $button .= " <button class='hapus btn btn-outline-danger feather icon-trash' id='" . $dokter->id . "' >Hapus</button>";
@@ -69,6 +68,8 @@ class DokterController extends Controller
         $text = [
             'nama_dokter.required' => 'Kolom nama dokter tidak boleh kosong',
             'bidang_dokter.required' => 'Kolom bidang dokter tidak boleh kosong',
+            'photo_dokter.mimes' => 'Kolom image harus berupa file dengan jenis: jpeg, png, jpg',
+            'photo_dokter.image' => 'Kolom image harus berupa gambar'
             // 'hari_praktek.required' => 'Kolom hari praktek tidak boleh kosong',
             // 'jam_praktek_pagi.required' => 'Kolom jam praktek tidak boleh kosong',
             // 'jam_praktek_malam.required' => 'Kolom jam praktek tidak boleh kosong',

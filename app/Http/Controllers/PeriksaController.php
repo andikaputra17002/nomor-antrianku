@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pendaftaran;
+use App\Models\Dokter;
 use App\Models\Riwayat;
+use App\Models\JamPraktek;
+use App\Models\pendaftaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class PeriksaController extends Controller
@@ -14,9 +17,41 @@ class PeriksaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $dokter = Dokter::with('pendaftaran')->get();
+        $jampraktek = JamPraktek::all();
+        $data = Riwayat::query();
+        if ($request->fildok != null) {
+            $data = $data->where('dokter_id', $request->get('fildok'));
+        }
+        if ($request->filjam != null) {
+            $data = $data->where('jam_praktek_id', $request->get('filjam'));
+        }
+        $data = $data->whereDate('tanggal_pendaftaran', Carbon::today())->get();
+        if (request()->ajax()) {
+            return datatables()->of($data)
+                ->addColumn('aksi', function ($data) {
+                    $button = " <button class='edit edit-jam btn btn-primary  feather icon-edit-1' id='" . $data->id . "' > Edit</button>";
+                    return $button;
+                })
+                ->addColumn('user_id', function($data) {
+                    return $data->user->name;
+                })
+                ->addColumn('dokter_id', function($data) {
+                    return $data->dokter->nama_dokter;
+                })
+
+                ->addColumn('jam_praktek_id', function($data) {
+                    return $data->jam_praktek->jam_praktek;
+                    // return $data->jam_praktek->jam_praktek_malam;
+                })
+                ->rawColumns(['aksi'])
+                ->addIndexColumn()
+                ->make(true);
+                //
+        }
+        return view('riwayat.index',compact('dokter', 'jampraktek'));
     }
 
     /**
@@ -70,7 +105,10 @@ class PeriksaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Riwayat::find($id);
+        if($data){
+            return response()->json($data);
+        }
     }
 
     /**

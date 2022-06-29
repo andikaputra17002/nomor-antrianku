@@ -68,9 +68,10 @@ class UserController extends Controller
                 'email' => $request->email,
                 'alamat' => $request->alamat,
                 'no_tlp' => $request->no_tlp,
+                'no_bpjs' => $request->no_bpjs,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 // 'password' => Hash::make($request->password),
-                'password' => bcrypt($request->password)
+                'password' => $request->password
             ]);
 
             $user = User::where('email', $request->email)->first();
@@ -105,6 +106,7 @@ class UserController extends Controller
             'no_tlp' => $request->no_tlp,
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
+            'no_bpjs' => $request->no_bpjs,
         ];
 
         $user = Auth::user();
