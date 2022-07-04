@@ -41,10 +41,15 @@ class PeriksaController extends Controller
                 ->addColumn('dokter_id', function($data) {
                     return $data->dokter->nama_dokter;
                 })
-
                 ->addColumn('jam_praktek_id', function($data) {
                     return $data->jam_praktek->jam_praktek;
                     // return $data->jam_praktek->jam_praktek_malam;
+                })
+                ->addColumn('status', function($data) {
+                    return $data->status ? 'Sudah Datang' : 'Tdk Datang';
+                })
+                ->addColumn('created_at', function($data) {
+                    return $data->created_at->format('H:i:s');
                 })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
@@ -120,7 +125,13 @@ class PeriksaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data= Riwayat::find($request->id);
+        $data->status = $request->status;
+        
+        $data->update();
+        return response()->json([
+			'status' => 200,
+		]);
     }
 
     /**

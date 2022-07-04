@@ -173,9 +173,16 @@
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">BPJS/Non-BPJS</label>
                                         <select class="form-control" id="transaksi" name="transaksi">
-                                            <option value=""></option>
-                                            <option value="BPJS">BPJS</option>
-                                            <option value="Non-BPJS">Non-BPJS</option>
+                                            <optgroup label="Menggunakan BPJS">
+                                                @foreach ($pasien as $pas)
+                                                <option value=""></option>
+                                                <option value="BPJS">No. BPJS{{ $pas->no_bpjs }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                            <optgroup label="Tidak Menggunakan BPJS">
+                                                <option value=""></option>
+                                                <option value="Non-BPJS">Non-BPJS</option>
+                                            </optgroup>
                                         </select>
                                     </div>
                                     <div class="modal-footer">
@@ -325,29 +332,29 @@
             })
         });
 
-        $(document).on('click', '.periksa', function (e) {
-        e.preventDefault();
-        var antrian = $(this).data('antrian');
-            $.ajax({
-                url : "{{route('periksa.store')}}",
-                type : 'post',
-                data : {
-                    'antrian' : antrian,
-                    _token : "{{csrf_token()}}"
-                },
-                success: function (data) {
-                    var filteredData = tabel
-                        .rows()
-                        .indexes()
-                        .filter( function ( value, index ) {
-                            return tabel.row(value).data()['antrian'] == antrian;
-                        } );
-                    tabel.rows( filteredData )
-                        .remove()
-                        .draw();
-                }
-            })
-        });
+        // $(document).on('click', '.periksa', function (e) {
+        // e.preventDefault();
+        // var antrian = $(this).data('antrian');
+        //     $.ajax({
+        //         url : "{{route('periksa.store')}}",
+        //         type : 'post',
+        //         data : {
+        //             'antrian' : antrian,
+        //             _token : "{{csrf_token()}}"
+        //         },
+        //         success: function (data) {
+        //             var filteredData = tabel
+        //                 .rows()
+        //                 .indexes()
+        //                 .filter( function ( value, index ) {
+        //                     return tabel.row(value).data()['antrian'] == antrian;
+        //                 } );
+        //             tabel.rows( filteredData )
+        //                 .remove()
+        //                 .draw();
+        //         }
+        //     })
+        // });
 
 
     $(".filter").on('change', function(){
@@ -368,7 +375,11 @@
     window.Echo.channel('private-broadcast')
         .listen('.no-antrian', (res) => {
             res['data'].forEach(item =>{
-                $('#no-'+item['dokter_id']).html(item['antrian']);
+                if (item === undefined || item.length == 0) {
+                   $('#no-'+item['dokter_id']).html('---');
+                }else{
+                    $('#no-'+item['dokter_id']).html(item['antrian']);
+                }
             });
         });
 

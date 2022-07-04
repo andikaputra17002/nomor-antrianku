@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -15,39 +14,12 @@
             </div>
         </div>
         <div class="content-body">
-            <section id="statistics-card">
-            </section>
             <!-- Data list view starts -->
             <section id="data-list-view" class="data-list-view-header">
                 <!-- DataTable starts -->
                 <div class="table-responsive">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="d-flex justify-content-center fw-bold">
-                                <h6 class="justify-content-sm-between my-1" for="">filter Dokter</h6>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="filter-dokter form-control filter" id="filter-dokter" name="">
-                                    <option value=""></option>
-                                    @foreach ($dokter as $data)
-                                    <option value="{{ $data->id }}">{{ $data->nama_dokter }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-center fw-bold">
-                                <h6 class="justify-content-sm-between my-1" for="">filter Jam Periksa</h6>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="filter-dokter form-control filter" id="filter-jam" name="">
-                                    <option value=""></option>
-                                    @foreach ($jampraktek as $data)
-                                    <option value="{{ $data->id }}">{{ $data->jam_praktek }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table zero-configuration text-center" id="datatablependaftaran">
+
+                    <table class="table zero-configuration text-center" id="datatableriwayat">
                         <thead>
                             <tr class="">
                                 <th></th>
@@ -66,25 +38,25 @@
                     </table>
                 </div>
                 <!-- DataTable ends -->
+
                 <!-- add new sidebar starts -->
 
-                <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog ">
                         <div class="modal-content">
-                            <div class="row"></div>
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modal-judul">Edit Data Riwayat Pendaftaran</h5>
-                                <div class="row">
-                                    <button type="button" id="tutup" class="close" data-bs-dismiss="modal"
-                                        aria-label="Close"><span aria-hidden="true" id="tutup">&times;</span></button>
-                                </div>
+                                <button type="button" id="tutup" class="close" data-bs-dismiss="modal"
+                                    aria-label="Close"><span aria-hidden="true" id="tutup">&times;</span></button>
                             </div>
-                            <div class="modal-body" id="modal-body">
-                                <form action="" method="post" id="formpendaftaran" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <form action="" method="post" id="formpetugas" enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-sm-12 data-field-col">
                                         <label for="data-name">Status</label>
-                                        <input type="text" class="form-control" id="status" name="status">
+                                        <input type="text" class="form-control" id="status" name="status"
+                                            placeholder="Masukkan Nama Petugas">
                                         <input type="hidden" id="id" name="id">
                                     </div>
 
@@ -102,6 +74,8 @@
                     </div>
                 </div>
 
+                {{-- update --}}
+
                 <!-- add new sidebar ends -->
             </section>
             <!-- Data list view end -->
@@ -112,49 +86,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-
-<script type="text/javascript">
-    $('.datepicker').datepicker({
-        // format: "dd/mm/yyyy",
-        format: "yyyy/mm/dd",
-    })
-</script>
-<script>
-    $(document).ready(function(){
-        $(".select-name").select2({
-            // dropdownParent: $('#formpendaftaran'),
-            width: "100%",
-            tags: true,
-            // allowClear: true,
-        });
-    });
-
-    $(document).ready(function(){
-      $(".select-dokter").select2({
-        // dropdownParent: $('#exampleModal'),
-        width: "100%",
-        tags: true,
-      });
-    });
-    $(document).ready(function(){
-      $(".select-jam").select2({
-        // dropdownParent: $('#exampleModal'),
-        width: "100%",
-        tags: true,
-      });
-    });
-    $(document).ready(function(){
-      $(".filter-dokter").select2({
-        width: "100%",
-        tags: true,
-      });
-    });
-
-</script>
-
 <script>
     $(document).ready(function () {
             $.ajaxSetup({
@@ -165,9 +98,9 @@
         });
 
     // Data Table
-        let fildok = $("#filter-dokter").val()
+    let fildok = $("#filter-dokter").val()
         let filjam = $("#filter-jam").val()
-        const tabel = $('#datatablependaftaran').DataTable({
+        const tabel = $('#datatableriwayat').DataTable({
             serverSide : true,
             responsive : true,
             // processing: true,
@@ -199,8 +132,8 @@
         $(document).on('click', '.edit', function (e) {
         e.preventDefault(); 
         $('#exampleModal').modal('show')
-        // $('#modal-judul').html("Edit Data Petugas"); // Judul
-        // $('#tutup').trigger("reset");
+        let id = $(this).attr('id')
+        
             $.ajax({
                 url : 'periksa/' + id + '/edit',
                 type : 'get',
@@ -212,225 +145,13 @@
                     console.log(data)
                     $('#id').val(data.id)
                     $('#status').val(data.status)
+                    
                     $('#tutup').trigger("reset");
                 }
             })
         });
-
-    // Tambah Data
-    // $('#formpendaftaran').submit(function (e) {
-    //         e.preventDefault();
-    //             var formData = new FormData(this);
-
-    //             $.ajax({
-    //             url : "{{route('pendaftaran.store')}}",
-    //             type : "post",
-    //             data: formData,
-    //             // cache:false,
-    //             contentType: false,
-    //             dataType:'json',
-    //             processData: false,
-    //             success: function(response) {
-    //                 // console.log(response);
-    //                     Swal.fire(
-    //                         'Added!',
-    //                         'Pendafataran Added Successfully!',
-    //                         'success'
-    //                         ),
-    //                 // $('#tutup').click()
-    //                 $('#user_id').val(null).trigger('change');
-    //                 $('#dokter_id').val(null).trigger('change');
-    //                 $('#jam_praktek_id').val(null).trigger('change');
-    //                 $('#formpendaftaran')[0].reset();
-    //                 $('#tutup').trigger("reset"); //form reset
-    //                 $('#exampleModal').modal('hide'); //modal hide
-    //                 $('#exampleModal').trigger("reset"); //modal hide
-    //                 $('#datatablependaftaran').DataTable().ajax.reload()
-    //             },
-    //             error : function (xhr) {
-    //                 // console.log('gagal');
-    //                 toastr.error(xhr.responseJSON.text, "GAGAL")
-    //             }
-    //         })
-    //     });
-
-    //     $(document).on('click', '.periksa', function (e) {
-    //     e.preventDefault();
-    //     var antrian = $(this).data('antrian');
-    //         $.ajax({
-    //             url : "{{route('periksa.store')}}",
-    //             type : 'post',
-    //             data : {
-    //                 'antrian' : antrian,
-    //                 _token : "{{csrf_token()}}"
-    //             },
-    //             success: function (data) {
-    //                 var filteredData = tabel
-    //                     .rows()
-    //                     .indexes()
-    //                     .filter( function ( value, index ) {
-    //                         return tabel.row(value).data()['antrian'] == antrian;
-    //                     } );
-    //                 tabel.rows( filteredData )
-    //                     .remove()
-    //                     .draw();
-    //             }
-    //         })
-    //     });
-
-
-    // $(".filter").on('change', function(){
-    //     fildok =  $("#filter-dokter").val()
-    //     tabel.ajax.reload(null,false)
-    //     // console.log([fildok]);
-    // });
-
-    $(".filter").on('change', function(){
-        filjam =  $("#filter-jam").val()
-        tabel.ajax.reload(null,false)
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // $(document).on('click', '.edit', function (e) {
-    //     e.preventDefault();
-    //     $('#exampleModal').modal('show')
-    //     let id = $(this).attr('id')
-    //     $('#modal-judul').html("Edit Data Petugas"); // Judul
-    //     $('#tutup').trigger("reset");
-
-    //     var SITEURL = '{{URL::to('')}}';
-    //         $.ajax({
-    //             url : 'pasien/' + id + '/edit',
-    //             type : 'get',
-    //             data : {
-    //                 id : id,
-    //                 _token : "{{csrf_token()}}"
-    //             },
-    //             success: function (data) {
-    //                 console.log(data)
-    //                 $('#id').val(data.id)
-    //                 $('#name').val(data.name)
-    //                 $('#email').val(data.email)
-    //                 $('#password').val(data.password)
-    //                 $('#password_confirmation').val(data.password_confirmation)
-    //                 $('#alamat').val(data.alamat)
-    //                 $('#jenis_kelamin').val(data.jenis_kelamin)
-    //                 $('#no_tlp').val(data.no_tlp)
-    //                 // $("#photoProfile").html(`<img src="/public/files/${data.photoProfile}" width="100" class="img-fluid img-thumbnail">`);
-    //                 $('#modal-preview').attr('alt', 'No image available');
-    //                 if(data.photoProfile){
-    //                 $('#modal-preview').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-    //                 $('#hidden_image').attr('src', SITEURL +'/public/files/'+data.photoProfile);
-    //                 }
-    //                 $('#tutup').trigger("reset");
-    //             }
-    //         })
-    //     });
-
-    // // Hapus
-    // $(document).on('click', '.hapus', function () {
-    //         id = $(this).attr('id');
-    //         Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "You won't be able to revert this!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, delete it!'
-    //         }).then((result) => {
-    //             if(result.isConfirmed){
-    //                 $.ajax({
-    //                 url: "pasien/" + id, //eksekusi ajax ke url ini
-    //                 type: 'delete',
-    //                 data: {
-    //                     id: id,
-    //                     "_token" : "{{csrf_token()}}"
-    //                 },
-    //                 success: function (data) { //jika sukses
-    //                     Swal.fire(
-    //                     'Deleted!',
-    //                     'Your file has been deleted.',
-    //                     'success'
-    //                     )
-    //                     $('#datatablepasien').DataTable().ajax.reload()
-    //                 }
-
-    //                 })
-    //             }
-    //         })
-
-    //     });
-
-    //     function readURL(input, id) {
-    //     id = id || '#modal-preview';
-    //     if (input.files && input.files[0]) {
-    //     var reader = new FileReader();
-    //     reader.onload = function (e) {
-    //     $(id).attr('src', e.target.result);
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    //     $('#modal-preview').removeClass('hidden');
-    //         $('#start').hide();
-    //         }
-    //     }
 </script>
 
-<script src="{{ asset('js/app.js') }}"></script>
-<script>
-    window.Echo.channel('private-broadcast')
-        .listen('.no-antrian', (res) => {
-            res['data'].forEach(item =>{
-                $('#no-'+item['dokter_id']).html(item['antrian']);
-            });
-        });
-
-</script>
-
-<script>
-    $(document).ready(function(){
-        $(".btn-next").click(function(){
-            var id = $(this).data('id');
-            var antrian = $('#no-'+id).html();
-            if(antrian !== '---'){
-                $.ajax({
-                    url : "{{route('periksa.store')}}",
-                    type : 'post',
-                    data : {
-                        'antrian' : antrian,
-                        _token : "{{csrf_token()}}"
-                    },
-                    success: function (data) {
-                        var filteredData = tabel
-                            .rows()
-                            .indexes()
-                            .filter( function ( value, index ) {
-                                return tabel.row(value).data()['antrian'] == antrian;
-                            } );
-                        tabel.rows( filteredData )
-                            .remove()
-                            .draw();
-                    }
-                })
-            }
-        });
-    });
-</script>
 @endpush
 
 @endsection
